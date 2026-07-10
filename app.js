@@ -26,6 +26,9 @@
   var btnMais    = document.getElementById("btn-mais");
   var btnParar   = document.getElementById("btn-parar");
   var seta       = document.getElementById("seta");
+  var contagem   = document.getElementById("contagem");
+
+  var CONTAGEM_INICIO = 3; // conta 3, 2, 1 antes da primeira seta
 
   // Estado dos timers (para poder limpar ao parar)
   var timerId = null;
@@ -52,6 +55,37 @@
   btnMais.addEventListener("click", function () { ajustarSegundos(1); });
   // Normaliza o valor quando o usuário sai do campo
   inputSeg.addEventListener("blur", function () { inputSeg.value = String(lerSegundos()); });
+
+  /* ---------- Contagem regressiva ---------- */
+
+  function mostrarNumero(n) {
+    contagem.textContent = String(n);
+    contagem.setAttribute("aria-label", "Começando em " + n);
+    // reinicia a animação de pulso a cada número
+    contagem.style.animation = "none";
+    void contagem.offsetWidth; // força reflow
+    contagem.style.animation = "";
+  }
+
+  // Conta 3, 2, 1 (1s cada) e então chama aoFim() para iniciar as setas
+  function contagemRegressiva(aoFim) {
+    var n = CONTAGEM_INICIO;
+    contagem.classList.remove("contagem--oculta");
+    mostrarNumero(n);
+
+    function tick() {
+      if (!jogando) return;
+      n--;
+      if (n >= 1) {
+        mostrarNumero(n);
+        timerId = setTimeout(tick, 1000);
+      } else {
+        contagem.classList.add("contagem--oculta");
+        aoFim();
+      }
+    }
+    timerId = setTimeout(tick, 1000);
+  }
 
   /* ---------- Ciclo da seta ---------- */
 
@@ -96,7 +130,10 @@
     telaFoco.hidden = false;
     btnParar.blur(); // evita foco no botão de parar ao entrar
 
-    proximaVolta(intervaloMs);
+    esconderSeta(); // seta fica escondida durante a contagem
+    contagemRegressiva(function () {
+      proximaVolta(intervaloMs);
+    });
   }
 
   function parar() {
@@ -106,6 +143,7 @@
       timerId = null;
     }
     esconderSeta();
+    contagem.classList.add("contagem--oculta"); // some se parar durante a contagem
     telaFoco.hidden = true;
     telaInicio.hidden = false;
   }

@@ -175,6 +175,29 @@ body {
   justify-content: center;
 }
 
+/* Contagem regressiva (3, 2, 1) antes da primeira seta */
+.contagem {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(7rem, 40vw, 20rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--vermelho);
+  pointer-events: none;
+  animation: pulso-contagem 1s ease-out;
+}
+
+.contagem--oculta { display: none; }
+
+@keyframes pulso-contagem {
+  0%   { transform: scale(0.6); opacity: 0; }
+  30%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* A seta é o único elemento com destaque na tela */
 .seta {
   color: var(--azul);
@@ -224,7 +247,7 @@ body {
   box-shadow: var(--foco-ring);
 }
 
-/* Respeita quem prefere menos movimento: sem transições */
+/* Respeita quem prefere menos movimento: sem transições nem animações */
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  * { transition: none !important; animation: none !important; }
 }
