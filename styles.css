@@ -1,0 +1,230 @@
+/* =========================================================
+   Feliciterapia — Brincadeira das Setas
+   Identidade visual extraída do logo. Foco: idosos,
+   baixa carga cognitiva, alto contraste, fonte grande.
+   ========================================================= */
+
+:root {
+  /* Paleta da marca (extraída do logo) */
+  --vermelho:        #E10A28;  /* marca / destaque */
+  --vermelho-escuro: #B00018;  /* vermelho p/ texto (contraste AA) */
+  --azul:            #3352A3;  /* ação / sorriso */
+  --azul-escuro:     #263C7A;  /* azul p/ texto e foco */
+  --rosa:            #FDADCD;  /* apoio / decorativo (nunca texto) */
+  --rosa-claro:      #FEE3EE;  /* fundo suave do painel */
+  --branco:          #FDF9F8;  /* fundo quente */
+  --tinta:           #2A2530;  /* texto neutro escuro */
+
+  --raio:      18px;
+  --sombra:    0 6px 20px rgba(38, 60, 122, 0.15);
+  --foco-ring: 0 0 0 4px rgba(51, 82, 163, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--tinta);
+  background: var(--branco);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Cada "tela" ocupa a viewport inteira */
+.tela {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 5vw, 48px);
+  gap: clamp(24px, 5vh, 48px);
+}
+
+.tela[hidden] { display: none; }
+
+/* =============================== INÍCIO / FAIXADA =============================== */
+
+.faixada {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.faixada__logo {
+  width: clamp(220px, 45vw, 360px);
+  height: auto;
+  display: block;
+}
+
+.faixada__subtitulo {
+  margin: 0;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  font-weight: 700;
+  color: var(--azul-escuro);
+  letter-spacing: 0.02em;
+}
+
+/* Painel de controles */
+.painel {
+  width: 100%;
+  max-width: 520px;
+  background: var(--rosa-claro);
+  border: 3px solid var(--rosa);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: clamp(24px, 5vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 4vh, 32px);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.campo__label {
+  font-size: clamp(1.25rem, 3.6vw, 1.6rem);
+  font-weight: 800;
+  color: var(--azul-escuro);
+}
+
+.campo__controle {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+}
+
+.passo {
+  flex: 0 0 auto;
+  width: 68px;
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  background: var(--azul);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.12s ease, transform 0.06s ease;
+}
+
+.passo:hover  { background: var(--azul-escuro); }
+.passo:active { transform: scale(0.94); }
+
+.campo__input {
+  width: 140px;
+  text-align: center;
+  font-size: clamp(2.4rem, 9vw, 3.4rem);
+  font-weight: 800;
+  color: var(--tinta);
+  background: #fff;
+  border: 3px solid var(--azul);
+  border-radius: 14px;
+  padding: 6px 4px;
+  -moz-appearance: textfield;
+}
+.campo__input::-webkit-outer-spin-button,
+.campo__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.campo__ajuda {
+  margin: 0;
+  font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+  color: #5a5560;
+}
+
+/* Botão principal */
+.botao-iniciar {
+  width: 100%;
+  padding: clamp(18px, 4vw, 26px);
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 800;
+  color: #fff;
+  background: var(--vermelho);
+  border: none;
+  border-radius: var(--raio);
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.12s ease, transform 0.06s ease;
+}
+
+.botao-iniciar:hover  { background: var(--vermelho-escuro); }
+.botao-iniciar:active { transform: scale(0.98); }
+
+/* =============================== TELA DE FOCO =============================== */
+
+.tela--foco {
+  position: fixed;
+  inset: 0;
+  background: var(--branco);
+  z-index: 100;
+  justify-content: center;
+}
+
+/* A seta é o único elemento com destaque na tela */
+.seta {
+  color: var(--azul);
+  width: min(70vw, 70vh);
+  height: min(70vw, 70vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.12s ease;
+}
+
+/* Direção: por padrão aponta p/ direita; classe inverte p/ esquerda */
+.seta--esquerda svg { transform: scaleX(-1); }
+
+/* Estados de visibilidade controlados pelo JS */
+.seta--oculta { opacity: 0; visibility: hidden; }
+
+/* Botão de parar: pequeno e discreto, no canto */
+.botao-parar {
+  position: fixed;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  right: max(14px, env(safe-area-inset-right));
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #9a949e;
+  background: transparent;
+  border: 1.5px solid #d9d4da;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.botao-parar:hover,
+.botao-parar:focus-visible {
+  opacity: 1;
+  color: var(--azul-escuro);
+  border-color: var(--azul);
+}
+
+/* =============================== FOCO / ACESSIBILIDADE =============================== */
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--foco-ring);
+}
+
+/* Respeita quem prefere menos movimento: sem transições */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

@@ -1,0 +1,15 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Arquivos temporários
+*.log
+*.tmp
+
+# Config local do Claude Code
+.claude/
